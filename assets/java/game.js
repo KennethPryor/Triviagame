@@ -86,8 +86,9 @@ $(document).ready(function () {
     };
 
     function NewQuestion() {
-        for (var i = 0; i < questionsArray.length; i++) {
-        let nextQuestion = i;
+        let Cq = -1;
+        Cq++;
+        let nextQuestion = questionsArray[Cq];
         questionsArray.splice(nextQuestion);
         currentQuestion.push(nextQuestion);
         $("#question").text(currentQuestion[0].question);
@@ -95,9 +96,9 @@ $(document).ready(function () {
         $("#button2").text(currentQuestion[0].answer2);
         $("#button3").text(currentQuestion[0].answer3);
         $("#button4").text(currentQuestion[0].answer4);
-    }};
+    };
 
-    $("#button4").on("click", function(data) {
+    $("#button4").on("click", function() {
         if (data == currentQuestion[0].correctAnswer) {
             console.log('True!');
         } else {
