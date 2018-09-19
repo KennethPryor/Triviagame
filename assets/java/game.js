@@ -11,57 +11,7 @@ $(document).ready(function () {
     };
     let correctAnswerCount = 0;
     let incorrectAnswerCount = 0;
-    function QnASetup(question, answer1, answer2, answer3, answer4, correctAnswer) {
-        this.question = question;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
-        this.correctAnswer = correctAnswer;
-
-    };
-    let jaws = new QnASetup(
-        "What city does the 1975 film 'Jaws' take place in?",
-        "Sydney",
-        "Daytona",
-        "Miami",
-        "Amity",
-        'Amity'
-    );
-    let starWars = new QnASetup(
-        'Which young Jedi Knight becomes Darth Vader in the Star Wars series?',
-        'Luke Skywalker',
-        'Anakin Skywalker',
-        'Obi Wan Kenobi',
-        'Darth Maul',
-        'Anakin Skywalker',
-    );
-    let wizardOfOz = new QnASetup(
-        'What color road must Dorothy and her friends follow to meet the wizard?',
-        'Orange',
-        'Gold',
-        'Yellow',
-        'White',
-        'Yellow'
-    );
-    let twister = new QnASetup(
-        'Dr.Jo Harding and her husband Bill chase down the most powerful storm in decades in what movie?',
-        'GeoStorm',
-        'Sharknado',
-        'Perfect Storm',
-        'Twister',
-        'Twister'
-    );
-    let titanic = new QnASetup(
-        'The pride and joy of the White Star Line,at the time,the largest moving object ever built was the _____?',
-        'R.M.S Titanic',
-        'Enterprise',
-        'Millennium Falcon',
-        'The Black Pearl',
-        'R.M.S Titanic'
-    );
-
-
+    
     $("body").on("click", ".startButton", function(event) {
         event.preventDefault();
         mainGame();
@@ -72,13 +22,14 @@ $(document).ready(function () {
     let correctAnswerArray = ['Amity','Anakin Skywalker','Yellow','Twister','R.M.S Titanic',]
 
     var timeLeft = 30;
-    var elem = document.getElementById('timer');
     var timerId = setInterval(countdown, 1000);
+    let Cq = 0;
 
     function countdown() {
-        if (timeLeft ==  0) {
+        if (timeLeft ==  -1) {
             NewQuestion();
             console.log('Next Question')
+            clearInterval(timerId);
         } else {
             $("#timer").text(timeLeft + ' seconds remaining');
             timeLeft--;
@@ -86,28 +37,42 @@ $(document).ready(function () {
     };
 
     function NewQuestion() {
-        let Cq = -1;
-        Cq++;
-        let nextQuestion = questionsArray[Cq];
-        questionsArray.splice(nextQuestion);
-        currentQuestion.push(nextQuestion);
-        $("#question").text(currentQuestion[0].question);
-        $("#button1").text(currentQuestion[0].answer1);
-        $("#button2").text(currentQuestion[0].answer2);
-        $("#button3").text(currentQuestion[0].answer3);
-        $("#button4").text(currentQuestion[0].answer4);
+        $('.btn').removeClass('correctA incorrectA');
+        // let nextQuestion = questionsArray[Cq];
+        // questionsArray.splice(nextQuestion);
+        currentQuestion.push(questionsArray[Cq]);
+        $("#question").text(currentQuestion[Cq].question);
+        $("#button1").text(currentQuestion[Cq].answer1);
+        $("#button2").text(currentQuestion[Cq].answer2);
+        $("#button3").text(currentQuestion[Cq].answer3);
+        $("#button4").text(currentQuestion[Cq].answer4);
     };
+    
+    function correctA() {
+        $(currentQuestion[0].correctAnswer).addClass('correctA')
+    };
+    
+    $(document).on("click", function() {
+        console.log(event.target.innerText);
+        if (event.target.innerText == currentQuestion[Cq].correctAnswer) {
+            console.log('Correct');
+            $(event.target).addClass("correctA");
+            correctAnswerCount++;
+            console.log('Correct: ' + correctAnswerCount);
 
-    $("#button4").on("click", function() {
-        if (data == currentQuestion[0].correctAnswer) {
-            console.log('True!');
         } else {
-            console.log('false');
-        }   
+            $(event.target).addClass('incorrectA');
+            correctA();
+            incorrectAnswerCount++;
+            console.log('Wrong: ' + incorrectAnswerCount);
+        };
+        Cq++;
+        setInterval(NewQuestion, 5000);
+        console.log('Current Q: ' + Cq);
     });
 
 
-    // let answersArray = [currentQuestion[0].answer1, currentQuestion[0].answer2, currentQuestion[0].answer3, currentQuestion[0].correctAnswer];
+
 
 
 
